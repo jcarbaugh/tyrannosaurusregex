@@ -79,30 +79,65 @@ class TyrannosaurusRegex(object):
         return m is not None
 
 
-class Matchtodon(list):
+class Matchtodon(object):
 
     def __init__(self, match):
-        super(Matchtodon, self).__init__(match.groups())
+        self.groups = match.groups()
         self.match = match
 
     def __getitem__(self, name):
+        print name
         return self.named.get(name)
+
+    def __repr__(self):
+        return self.groups.__repr__()
+
+    def __iter__(self):
+        for index, item in enumerate(self.groups):
+            start = self.match.start(index)
+            end = self.match.end(index)
+            yield Nugget(item, start, end)
 
     @property
     def named(self):
         return self.match.groupdict()
 
+    @property
+    def start(self):
+        return self.match.start()
 
-def rgx(pattern, **kwargs):
+    @property
+    def end(self):
+        return self.match.end()
+
+
+class Nugget(str):
+
+    def __new__():
+        pass
+
+    def __init__(self, s, start, end):
+        self.value = s
+        self.start = start
+        self.end = end
+
+    def __repr__(self):
+        return "<Nugget: '%s' %s:%s>" % (self.value, self.start, self.end)
+
+    def __str__(self):
+        return self.value
+
+
+def rex(pattern, **kwargs):
     return TyrannosaurusRegex(pattern, **kwargs)
 
 
 if __name__ == "__main__":
 
-    r = rgx(r"([a-z]{3})")
+    r = rex(r"([a-z]{3})")
     for m in r("abc def GHi jlkm opqr stuvw xYz"):
-        print m
+        print m, list(m), m[1]
 
     zipcode = "55555"
-    print rgx("\d{5}$").matches(zipcode)
-    print zipcode == rgx("\d{5}$")
+    print rex("\d{5}$").matches(zipcode)
+    print zipcode == rex("\d{5}$")
