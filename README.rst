@@ -6,8 +6,8 @@ Just playing around with some regular expression ideas. Other ideas or suggestio
 The goal is to make it easy to do simple regex stuff. Not that it's incredibly HARD right now, but it could be easier, right?
 ::
 
-    >>> from tregex import rgx
-    >>> r = rgx(r"([a-z]{3})")
+    >>> from trex import rex
+    >>> r = rex(r"([a-z]{3})")
     >>> for m in r("abc def GHi jlkm opqr stuvw xYz"):
     >>>    print m
     ['abc']
@@ -19,37 +19,37 @@ The goal is to make it easy to do simple regex stuff. Not that it's incredibly H
 Or...
 ::
 
-    >>> from tregex import rgx
+    >>> from trex import rex
     >>> zipcode = "55555"
-    >>> rgx("\d{5}$").matches(zipcode)
+    >>> rex("\d{5}$").matches(zipcode)
     True
 
 
 Usage
 -----
 
-Create your Tyrannosaurusregex object by calling `rgx` with your pattern.
+Create your TyrannosaurusRegex object by calling `rex` with your pattern.
 ::
 
-    >>> from tregex import rgx
-    >>> r = rgx(r"(?P<threeletters>[a-z]{3})")
+    >>> from trex import rex
+    >>> r = rex(r"(?P<threeletters>[a-z]{3})")
 
 
-You can pass flags as arguments to `rgx` or set them on the returned Tyrannosaurusregex object.
+You can pass flags as arguments to `rex` or set them on the returned TyrannosaurusRegex object.
 ::
 
-    >>> r = rgx(r"(?P<threeletters>[a-z]{3})", ignorecase=True)
+    >>> r = rex(r"(?P<threeletters>[a-z]{3})", ignorecase=True)
     >>> r.ignorecase = False
 
 
-To find matches, the Tyrannosaurusregex object can be called with the text that is to be searched.
+To find matches, the TyrannosaurusRegex object can be called with the text that is to be searched.
 ::
 
     >>> text = "abc def GHi jlkm opqr stuvw xYz"
     >>> g = r(text)
     >>> matches = list(g)
 
-Calling the Tyrannosaurusregex object returns a generator that emits Matchtodon objects. A Matchtodon is a list of the matched groups.
+Calling the TyrannosaurusRegex object returns a generator that emits Matchtodon objects. A Matchtodon is a list of the matched groups.
 ::
 
     >>> print matches
@@ -80,16 +80,16 @@ I'm not actually proposing this, unless you think it's a good idea... in which c
 Equality acts like re.match. The objects are equal if zero or more characters at the beginning of the string match the pattern.
 ::
 
-    >>> print "ABC" == rgx("[a-z]{3}")
+    >>> print "ABC" == rex("[a-z]{3}")
     False
-    >>> print "abcdef" == rgx("[a-z]{3}")
+    >>> print "abcdef" == rex("[a-z]{3}")
     True
-    >>> print "abcdef" == rgx("[a-z]{3}$")
+    >>> print "abcdef" == rex("[a-z]{3}$")
     False
 
 
 The *in* operator acts like re.search. It evaluates to True if the pattern is found anywhere in the string. I'd love to be able to reverse the operands, but oh well.
 ::
 
-    >>> print "235 wgg ADGKJE" in rgx("[a-z]{3}")
+    >>> print "235 wgg ADGKJE" in rex("[a-z]{3}")
     True
